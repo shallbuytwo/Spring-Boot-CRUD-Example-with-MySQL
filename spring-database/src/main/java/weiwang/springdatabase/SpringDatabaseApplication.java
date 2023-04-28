@@ -19,19 +19,48 @@ public class SpringDatabaseApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(StudentDAO studentDAO) {
 		return runner -> {
-			//createStudent(studentDAO);
-			//creatMultipleStudents(studentDAO);
-			//readStudent(studentDAO);
-			//queryForStudent(studentDAO);
-			queryForStudentByLastName(studentDAO);
+			// createStudent(studentDAO);
+			// creatMultipleStudents(studentDAO);
+			// readStudent(studentDAO);
+			// queryForStudent(studentDAO);
+			// queryForStudentByLastName(studentDAO);
+			// updateStudent(studentDAO);
+			// deleteStudent(studentDAO);
+			deleteAllStudent(studentDAO);
 		};
+	}
+
+	private void deleteAllStudent(StudentDAO studentDAO) {
+		System.out.println("Deleting all students");
+		int numRowsDeleted = studentDAO.deleteAll();
+		System.out.println("Deleting row count: " + numRowsDeleted);
+	}
+
+	private void deleteStudent(StudentDAO studentDAO) {
+		int studentId = 3;
+		System.out.println("Deleting student id: " + studentId);
+		studentDAO.delete(studentId);
+	}
+
+	private void updateStudent(StudentDAO studentDAO) {
+		// retrieve student based on  the id: primary key
+		int studentId = 1;
+		System.out.println("Getting student with id: " + studentId);
+		Student myStudent = studentDAO.findById(studentId);
+		// change first name
+		System.out.println("Updating student ...");
+		myStudent.setFirstName("Wei");
+		// update the student
+		studentDAO.update(myStudent);
+		// display the update student
+		System.out.println("Updated student: " + myStudent);
 	}
 
 	private void queryForStudentByLastName(StudentDAO studentDAO) {
 		// get a list of students
 		List<Student> theStudents = studentDAO.findByLastName("Wang");
 		// display list of students
-		for (Student tempStudent:theStudents) {
+		for (Student tempStudent : theStudents) {
 			System.out.println(tempStudent);
 		}
 	}
